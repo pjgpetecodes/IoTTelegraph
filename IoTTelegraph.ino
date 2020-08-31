@@ -1,7 +1,11 @@
-const int LEDPin = BUILTIN_LED;
-const int buttonPin = 5;
-int buttonPressed = false;
-int buttonWasPressed = false;
+/**
+ * Telegraph Setup
+ */
+#define LEDPin 16;
+#define telegraphPin 5;
+
+int telegraphPressed = false;
+int telegraphWasPressed = false;
 int pulseOnLength = 0;
 int pulseStartTime = 0;
 int pulseEndTime = 0;
@@ -12,22 +16,22 @@ String code = "";
 void setup() {
     // put your setup code here, to run once:
     pinMode(LEDPin, OUTPUT);
-    pinMode(buttonPin, INPUT);
+    pinMode(telegraphPin, INPUT);
     Serial.begin(9600); // open the serial port at 9600 bps:
 }
 
 void loop() {
     // put your main code here, to run repeatedly:
 
-    int buttonState = digitalRead(buttonPin);
+    int telegraphState = digitalRead(telegraphPin);
 
-    if (buttonState == LOW)
+    if (telegraphState == LOW)
     {
         digitalWrite(LEDPin, LOW);
         
-        if (buttonPressed == true)
+        if (telegraphPressed == true)
         {
-          buttonPressed = false;
+          telegraphPressed = false;
           pulseEndTime = millis();
           //Serial.print("Pulse End: ");
           //Serial.print(pulseEndTime);
@@ -46,14 +50,14 @@ void loop() {
             {
               code += ".";
               //Serial.print(".");
-              buttonWasPressed = true;
+              telegraphWasPressed = true;
               //Serial.println();        // carriage return after the last label
             }
             else if (pulseOnLength >= 200 && pulseOnLength < 500)
             {
               code += "-";
               //Serial.print("-");
-              buttonWasPressed = true;
+              telegraphWasPressed = true;
               //Serial.println();        // carriage return after the last label
             }
             else
@@ -63,14 +67,14 @@ void loop() {
                         
           }          
         }
-        else if (buttonWasPressed == true)
+        else if (telegraphWasPressed == true)
         {
 
           if (millis() - pulseEndTime > 300)
           {
             convertor(code);
             code = "";                            //reset code to blank string
-            buttonWasPressed = false;
+            telegraphWasPressed = false;
           }
           
         }
@@ -79,10 +83,10 @@ void loop() {
       {
           digitalWrite(LEDPin, HIGH);
   
-          if (buttonPressed == false)
+          if (telegraphPressed == false)
           {
               pulseStartTime = millis();
-              buttonPressed = true;
+              telegraphPressed = true;
               //Serial.print("Pulse Start: ");
               //Serial.print(pulseStartTime);
               //Serial.println();        // carriage return after the last label
@@ -92,8 +96,38 @@ void loop() {
 }
 
 void convertor(String code) {
-  static String letters[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-",
-                             ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "-----", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "E"
+  
+  /*
+
+  Morse Code Table:
+  -----------------
+
+  A   . -           N   - .         0   - - - - -
+  B   - . . .       O   - - -       1   . - - - -
+  C   - . - .       P   . - - .     2   . . - - -
+  D   - . .         Q   - - . -     3   . . . - -
+  E   .             R   . - .       4   . . . . -
+  F   . . - .       S   . . .       5   . . . . .
+  G   - - .         T   -           6   - . . . .
+  H   . . . .       U   . . -       7   - - . . .
+  I   . .           V   . . . -     8   - - - . .
+  J   . - - -       W   . - -       9   - - - - .
+  K   - . -         X   - . . -
+  L   . - . .       Y   - . - - 
+  M   - -           Z   - - . .
+  
+  Send Message    . - . - . -
+  Cancel Message  . . . . . .
+
+  */
+
+  /* Based on Converter code here... https://www.instructables.com/id/Morse-Code-Decoder/  */
+
+  static String letters[] = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", 
+                              ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-",".-.", 
+                              "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", 
+                              "-----", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", 
+                              "E"
                             };
   int i = 0;
 
