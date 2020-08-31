@@ -96,7 +96,7 @@ void loop() {
 }
 
 void convertor(String code) {
-  
+
   /*
 
   Morse Code Table:
@@ -159,7 +159,7 @@ void convertor(String code) {
     }
     if (letters[i] == "E")
     {
-      Serial.println("<Wrong input>");  //if input code doesn't match any letter, error
+      Serial.print("Unknown Code:");  //if input code doesn't match any letter, error
     }
   }
   
