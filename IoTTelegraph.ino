@@ -72,7 +72,7 @@ void loop() {
 
           if (millis() - pulseEndTime > 300)
           {
-            convertor(code);
+            converter(code);
             code = "";                            //reset code to blank string
             telegraphWasPressed = false;
           }
@@ -95,7 +95,7 @@ void loop() {
       }
 }
 
-void convertor(String code) {
+void converter(String code) {
 
   /*
 
