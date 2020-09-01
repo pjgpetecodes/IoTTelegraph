@@ -4,7 +4,7 @@
 #define LEDPin 16;
 #define telegraphPin 5;
 
-int telegraphPressed = false;
+int telegraphActive = false;
 int telegraphWasPressed = false;
 int pulseOnLength = 0;
 int pulseStartTime = 0;
@@ -29,9 +29,9 @@ void loop() {
     {
         digitalWrite(LEDPin, LOW);
         
-        if (telegraphPressed == true)
+        if (telegraphActive == true)
         {
-          telegraphPressed = false;
+          telegraphActive = false;
           pulseEndTime = millis();
           //Serial.print("Pulse End: ");
           //Serial.print(pulseEndTime);
@@ -83,10 +83,10 @@ void loop() {
       {
           digitalWrite(LEDPin, HIGH);
   
-          if (telegraphPressed == false)
+          if (telegraphActive == false)
           {
               pulseStartTime = millis();
-              telegraphPressed = true;
+              telegraphActive = true;
               //Serial.print("Pulse Start: ");
               //Serial.print(pulseStartTime);
               //Serial.println();        // carriage return after the last label
